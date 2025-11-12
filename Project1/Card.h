@@ -1,14 +1,17 @@
 #pragma once
 
+#include <assert.h>
 #include <string>
 
 enum FaceAnimal { Crab, Penguin, Octopus, Turtle, Walrus };
 enum FaceBackground { Red, Green, Blue, Purple, Yellow };
 
 class Card {
-private:
-	Card(FaceAnimal, FaceBackground);
 public:
+	FaceAnimal faceAnimal;
+	FaceBackground faceBackground;
+	Card(FaceAnimal, FaceBackground);
+private:
 	int getNRows();
-	std::string operator() ();
+	std::string operator() (int row);
 };

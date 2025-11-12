@@ -1,8 +1,13 @@
 #pragma once
+#include <assert.h>
+#include <iostream>
 
 class Rubis {
-private:
+public:
+	int value;
 	Rubis(int);
 public:
 	operator int() const;
+	friend std::ostream& operator<<(std::ostream& os, Rubis& rubis);
 };
+

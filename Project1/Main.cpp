@@ -1,8 +1,16 @@
 #include <iostream>
 
 #include "Rules.h"
+#include "CardDeck.h"
 
 int main() {
+
+	CardDeck cd = CardDeck::make_CardDeck();
+	std::cout << cd.isEmpty() << std::endl;
+	// std::cout << cd.getNext() << std::endl;
+	// cd.shuffle();
+	// std::cout << cd.getNext() << std::endl;
+
 	Game game;
 
 	bool inputValid = false;
