@@ -11,7 +11,6 @@ public:
 	FaceAnimal faceAnimal;
 	FaceBackground faceBackground;
 	Card(FaceAnimal, FaceBackground);
-private:
 	int getNRows();
 	std::string operator() (int row);
 };

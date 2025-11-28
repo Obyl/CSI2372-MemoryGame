@@ -4,12 +4,19 @@
 #include <vector>
 #include "Board.h"
 #include "Player.h"
+#include "CardDeck.h"
 
 class Game {
 private:
+
+	CardDeck* deck_ptr;
+	int round;
 	Board board;
 	std::vector<Player> players;
+
 public:
+
+	Game();
 	int getRound();
 	void addPlayer(const Player&);
 	Player& getPlayer(Side);
