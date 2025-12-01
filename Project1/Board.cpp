@@ -50,7 +50,12 @@ std::ostream& operator<<(std::ostream& os, Board& board)
             else os << "    ";
 
             for (int number = 0; number < 5; number++)
-            {    
+            {
+                if (letter == 2 && number == 2) {
+                    os << "    ";
+                    continue;
+                }
+
                 Card* card = board.getCard((Letter)letter, (Number)number);
                 if (board.isFaceUp((Letter)letter, (Number)number))
                 {
