@@ -2,7 +2,11 @@
 
 Game::Game()
 {
-	round = 0;
+
+	currentCard = nullptr;
+	previousCard = nullptr;
+
+	round = 1;
 	deck_ptr = &CardDeck::make_CardDeck();
 	board = new Board();
 }
@@ -10,6 +14,16 @@ Game::Game()
 Game::~Game() {
 	delete deck_ptr;
 	delete board;
+
+	delete currentCard;
+	delete previousCard;
+
+}
+
+void Game::resetStartOfRound()
+{
+	currentCard = nullptr;
+	previousCard = nullptr;
 }
 
 void Game::addPlayer(const Player& player) {
@@ -54,28 +68,25 @@ Player& Game::getPlayer(Side side)
 
 const Card* Game::getPreviousCard() const
 {
-	return &previousCard;
+	return previousCard;
 }
 
 const Card* Game::getCurrentCard() const
 {
-	return &currentCard;
+	return currentCard;
 }
 
 void Game::setCurrentCard(const Card* card) 
 {
+
 	if (currentCard != nullptr) {
-		Card currCard = Card(*currentCard);
-		previousCard = &currCard;
+
+		delete previousCard;
+		previousCard = new Card(*currentCard, *currentCard);
 	}
 
-	Card newCard = Card(*card);
-	currentCard = &newCard;
-
-	if(previousCard != nullptr)
-		std::cout << (*previousCard)(1) << std::endl;
-
-	std::cout << (*currentCard)(1) << std::endl;
+	delete currentCard;
+	currentCard = new Card(*card, *card);
 }
 
 Card* Game::getCard(const Letter& letter, const Number& number) 
@@ -86,6 +97,13 @@ Card* Game::getCard(const Letter& letter, const Number& number)
 void Game::setCard(const Letter& letter, const Number& number, Card* card) 
 {
 	board->setCard(letter, number, card);
+}
+
+void Game::deactivatePlayer(Side side)
+{
+	Player& playerToDeactivate = getPlayer(side);
+	playerToDeactivate.setActive(false);
+
 }
 
 std::vector<Player>& Game::getPlayers() {

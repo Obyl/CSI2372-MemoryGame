@@ -10,7 +10,7 @@ class Game {
 private:
 
 	CardDeck* deck_ptr;
-	Card previousCard, currentCard;
+	Card *previousCard, *currentCard;
 	int round;
 	Board* board;
 	std::vector<Player> players;
@@ -20,8 +20,10 @@ public:
 	Game();
 	~Game();
 	void incrementRound();
+	void resetStartOfRound();
 	int getRound() const;
 	void addPlayer(const Player&);
+	void deactivatePlayer(Side);
 	Player& getPlayer(Side);
 	const Card* getPreviousCard() const;
 	const Card* getCurrentCard() const;

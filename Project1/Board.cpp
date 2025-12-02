@@ -19,6 +19,7 @@ void Board::allFacesDown()
             face_up_flags[letter][number] = 0;
         }
     }
+    unflippedCardsSequence.clear();
 }
 
 bool Board::isFaceUp(const Letter& letter, const Number& number) const
@@ -28,18 +29,23 @@ bool Board::isFaceUp(const Letter& letter, const Number& number) const
 
 bool Board::turnFaceUp(const Letter& letter, const Number& number)
 {
+    unflippedCardsSequence.push_back(getCard(letter, number));
     return face_up_flags[letter][number] = 1;
 }
 
 bool Board::turnFaceDown(const Letter& letter, const Number& number)
 {
+   
     return face_up_flags[letter][number] = 0;
 }
 
-std::ostream& operator<<(std::ostream& os, Board& board)
+void Board::setExpertDisplay(bool value)
 {
-    const std::string letters = "ABCDE";
-    const std::string numbers = "12345";
+    isExpertDisplay = value;
+}
+
+std::ostream& nonExpertDisplay(std::ostream& os, Board& board)
+{
 
     for (int letter = 0; letter < 5; letter++)
     {
@@ -77,4 +83,51 @@ std::ostream& operator<<(std::ostream& os, Board& board)
     }
     os << std::endl;
     return os;
+}
+
+std::ostream& expertDisplay(std::ostream& os, Board& board)
+{
+
+    if (board.unflippedCardsSequence.empty()) return os;
+
+    for (int line=0; line<4; line++)
+    {
+        for (Card* card : board.unflippedCardsSequence)
+        {
+            if (line < 3 && line >= 0)
+            {
+                os << (*card)(line) << " ";
+            }
+            else
+            {
+                for (int letter = 0; letter < 5; letter++)
+                {
+                    for (int number = 0; number < 5; number++)
+                    {
+                        if (board.cards[letter][number] == card)
+                        {
+                            os << letters[letter] << numbers[number] << "  ";
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        os << std::endl;
+    }
+
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, Board& board)
+{
+    if (!board.isExpertDisplay)
+    {
+        return nonExpertDisplay(os, board);
+    }
+    else
+    {
+        return expertDisplay(os, board);
+    }
+    
 }

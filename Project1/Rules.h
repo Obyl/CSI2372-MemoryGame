@@ -13,4 +13,6 @@ public:
 	bool gameOver(const Game&);
 	bool roundOver(const Game&);
 	const Player& getNextPlayer(const Game&);
+	void resetCurrentPlayer();
+	bool isExpertDisplayMode();
 };

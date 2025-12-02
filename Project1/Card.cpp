@@ -6,12 +6,6 @@ Card::Card(FaceAnimal faceAnimal, FaceBackground faceBackground)
     this->faceBackground = faceBackground;
 }
 
-Card::Card(const Card& other) 
-{
-    this->faceAnimal = other.faceAnimal;
-    this->faceBackground = other.faceBackground;
-}
-
 int Card::getNRows()
 {
     return 3;
@@ -34,4 +28,14 @@ std::string Card::operator()(int row)
             std::string(1, animals[faceAnimal]) + 
             std::string(1, colors[faceBackground]);
     }
+}
+
+Card::operator FaceAnimal() const
+{
+    return faceAnimal;
+}
+
+Card::operator FaceBackground() const
+{
+    return faceBackground;
 }

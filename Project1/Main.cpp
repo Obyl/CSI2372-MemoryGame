@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <cstdlib>
 
 #include "Rules.h"
@@ -41,6 +42,7 @@ int main() {
 	
 
 	Rules rules(expertDisplayMode == 'y', expertRulesMode == 'y');
+	game.getBoard()->setExpertDisplay(rules.isExpertDisplayMode());
 
 	inputValid = false;
 	int numPlayers;
@@ -65,17 +67,20 @@ int main() {
 
 	std::cout << game << std::endl;
 
-	system("cls");
+	// system("cls");
+
+	game.getDeckPtr()->shuffle();
+	for (int row = 0; row < 5; row++) {
+		for (int col = 0; col < 5; col++) {
+			game.setCard((Letter)row, (Number)col, game.getDeckPtr()->getNext());
+		}
+	}
 
 	while (!rules.gameOver(game)) {
-		game.getBoard()->allFacesDown();
 
-		game.getDeckPtr()->shuffle();
-		for (int row = 0; row < 5; row++) {
-			for (int col = 0; col < 5; col++) {
-				game.setCard((Letter)row, (Number)col, game.getDeckPtr()->getNext());
-			}
-		}
+		game.getBoard()->allFacesDown();
+		game.resetStartOfRound();
+		rules.resetCurrentPlayer();
 
 		for (Player& player : game.getPlayers()) {
 			player.setActive(true);
@@ -103,7 +108,10 @@ int main() {
 				break;
 			}
 
-			system("cls");
+			// system("cls");
+
+			std::cout << "Round " << game.getRound() << " begins!" << std::endl;
+
 			std::cout << game << std::endl;
 			std::cout << "Hit enter to continue" << std::endl;
 			std::cin.ignore();
@@ -111,11 +119,13 @@ int main() {
 			game.getBoard()->allFacesDown();
 		}
 
+		
+
 		while (!rules.roundOver(game)) {
 			//system("cls");
 			std::cout << game << std::endl;
 
-			Player player = rules.getNextPlayer(game);
+			const Player& player = rules.getNextPlayer(game);
 			std::cout << player.getName() << "'s turn." << std::endl;
 
 			Letter letter;
@@ -157,21 +167,31 @@ int main() {
 			game.setCurrentCard(game.getCard(letter, number));
 
 			if (!rules.isValid(game))
-				player.setActive(false);
+			{
+				game.deactivatePlayer(player.getSide());
+				std::cout << player.getName() << " has been eliminated!" << std::endl;
+			}
+				
 		}
 
-		Player remainingPlayer = rules.getNextPlayer(game);
-		remainingPlayer.addRubies(*rubisDeck.getNext());
+		const Player& remainingPlayer = rules.getNextPlayer(game);
+		Rubis reward = *rubisDeck.getNext();
+
+		game.getPlayer(remainingPlayer.getSide()).addRubies(reward);
+
+		std::cout << remainingPlayer.getName() << " obtained " << int(reward) << " rubis." << std::endl;
+
 		game.incrementRound();
+
 	}
 
-	system("cls");
+	// system("cls");
 
 	std::sort(game.getPlayers().begin(), game.getPlayers().end(), comp);
 
 	std::cout << "Game over! Standings:" << std::endl;
 	for (Player& player : game.getPlayers()) {
-		std::cout << player.getName() << std::endl;
+		std::cout << player.getName() << ": " << player.getNRubies() << std::endl;
 	}
 
 	std::cout << std::endl << "The winner is: " << game.getPlayers()[game.getPlayers().size()-1].getName() << "!" << std::endl;

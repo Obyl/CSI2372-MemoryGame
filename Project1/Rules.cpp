@@ -12,23 +12,33 @@ bool Rules::isValid(const Game& game) {
 		return true;
 	}
 
-	std::cout << ((game.getPreviousCard()->faceAnimal == game.getCurrentCard()->faceAnimal) ||
-		(game.getPreviousCard()->faceBackground == game.getCurrentCard()->faceBackground)) << std::endl;
-
 	return (game.getPreviousCard()->faceAnimal == game.getCurrentCard()->faceAnimal) ||
 		(game.getPreviousCard()->faceBackground == game.getCurrentCard()->faceBackground);
 }
 
 bool Rules::gameOver(const Game& game) {
-	return game.getRound() == 7;
+	return game.getRound() > 7;
+}
+
+bool Rules::isExpertDisplayMode()
+{
+	return expertDisplayMode;
+}
+
+void Rules::resetCurrentPlayer()
+{
+	currentPlayer = -1;
 }
 
 bool Rules::roundOver(const Game& game) {
+	
 	int activePlayers = 0;
 	for (const Player& player : game.getPlayers()) {
 		if (player.isActive())
 			activePlayers++;
 	}
+
+	// std::cerr << activePlayers << std::endl;
 	
 	return activePlayers == 1;
 }
