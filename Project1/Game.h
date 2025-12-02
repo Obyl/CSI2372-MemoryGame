@@ -10,7 +10,7 @@ class Game {
 private:
 
 	CardDeck* deck_ptr;
-	Card *previousCard, *currentCard;
+	Card previousCard, currentCard;
 	int round;
 	Board* board;
 	std::vector<Player> players;
@@ -19,6 +19,7 @@ public:
 
 	Game();
 	~Game();
+	void incrementRound();
 	int getRound() const;
 	void addPlayer(const Player&);
 	Player& getPlayer(Side);
@@ -28,7 +29,8 @@ public:
 	Card* getCard(const Letter&, const Number&);
 	void setCard(const Letter&, const Number&, Card*);
 	friend std::ostream& operator<<(std::ostream&, Game&);
-	std::vector<Player> getPlayers() const;
+	std::vector<Player>& getPlayers();
+	const std::vector<Player>& getPlayers() const;
 	Board* getBoard();
 	CardDeck* getDeckPtr();
 };

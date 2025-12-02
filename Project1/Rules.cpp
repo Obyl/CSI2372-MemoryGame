@@ -8,6 +8,13 @@ Rules::Rules(bool expertDisplayMode, bool expertRulesMode) {
 }
 
 bool Rules::isValid(const Game& game) {
+	if (game.getPreviousCard() == nullptr) {
+		return true;
+	}
+
+	std::cout << ((game.getPreviousCard()->faceAnimal == game.getCurrentCard()->faceAnimal) ||
+		(game.getPreviousCard()->faceBackground == game.getCurrentCard()->faceBackground)) << std::endl;
+
 	return (game.getPreviousCard()->faceAnimal == game.getCurrentCard()->faceAnimal) ||
 		(game.getPreviousCard()->faceBackground == game.getCurrentCard()->faceBackground);
 }
@@ -17,17 +24,19 @@ bool Rules::gameOver(const Game& game) {
 }
 
 bool Rules::roundOver(const Game& game) {
-	/*int activePlayers = 0;
-	for (Player& player : game.getPlayers()) {
+	int activePlayers = 0;
+	for (const Player& player : game.getPlayers()) {
 		if (player.isActive())
 			activePlayers++;
 	}
 	
-	return activePlayers == 1; */
-	return false;
+	return activePlayers == 1;
 }
 
 const Player& Rules::getNextPlayer(const Game& game) {
-	currentPlayer = (currentPlayer + 1) % game.getPlayers().size();
+	do {
+		currentPlayer = (currentPlayer + 1) % game.getPlayers().size();
+	} while (!game.getPlayers()[currentPlayer].isActive());
+
 	return game.getPlayers()[currentPlayer];
 }

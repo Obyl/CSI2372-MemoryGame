@@ -3,12 +3,16 @@
 
 #include "Rules.h"
 #include "CardDeck.h"
+#include "RubisDeck.h"
+
+bool comp(Player a, Player b);
 
 int main() {
 
 	srand(time(0));
 
 	Game game;
+	RubisDeck rubisDeck = RubisDeck::make_RubisDeck();
 
 	bool inputValid = false;
 
@@ -20,7 +24,7 @@ int main() {
 		if (expertDisplayMode == 'y' || expertDisplayMode == 'n')
 			inputValid = true;
 		else
-			std::cout << "Invalid output. Please try again." << std::endl;
+			std::cout << "Invalid input. Please try again." << std::endl;
 	}
 	
 	inputValid = false;
@@ -32,7 +36,7 @@ int main() {
 		if (expertRulesMode == 'y' || expertRulesMode == 'n')
 			inputValid = true;
 		else
-			std::cout << "Invalid output. Please try again." << std::endl;
+			std::cout << "Invalid input. Please try again." << std::endl;
 	}
 	
 
@@ -47,7 +51,7 @@ int main() {
 		if (numPlayers >= 2 && numPlayers <= 4)
 			inputValid = true;
 		else
-			std::cout << "Invalid output. Please try again." << std::endl;
+			std::cout << "Invalid input. Please try again." << std::endl;
 	}
 	
 	std::cin.ignore();
@@ -108,8 +112,14 @@ int main() {
 		}
 
 		while (!rules.roundOver(game)) {
+			//system("cls");
+			std::cout << game << std::endl;
+
 			Player player = rules.getNextPlayer(game);
 			std::cout << player.getName() << "'s turn." << std::endl;
+
+			Letter letter;
+			Number number;
 
 			inputValid = false;
 			while (!inputValid) {
@@ -118,24 +128,20 @@ int main() {
 				std::string card;
 				std::getline(std::cin, card);
 
-				//two chars, letter then number
-				//within bounds of the board
-				//not the centre
-				//not already turned up
-
 				if (card.size() > 2) {
 					std::cout << "Invalid format. Enter card as: [A-E][1-5]" << std::endl;
 					continue;
 				}
 
-				Letter letter = (Letter) (card[0] - 'A');
-				Number number = (Number) (card[1] - '1');
-
-				if (letter < 'A' || letter > 'E' || number < 0 || number > 5) {
+				if (card[0] < 'A' || card[0] > 'E' || card[1] < '0' || card[1] > '5') {
 					std::cout << "Invalid format. Enter card as: [A-E][1-5]" << std::endl;
 					continue;
 				}
-				if (letter == 'C' && number == 3) {
+
+				letter = (Letter) (card[0] - 'A');
+				number = (Number) (card[1] - '1');
+
+				if (letter == Letter::C && number == Number::three) {
 					std::cout << "Cannot select centre. Please enter a different card." << std::endl;
 					continue;
 				}
@@ -143,7 +149,34 @@ int main() {
 					std::cout << "That card is already face up. Please enter a different card." << std::endl;
 					continue;
 				}
+
+				inputValid = true;
 			}
+
+			game.getBoard()->turnFaceUp(letter, number);
+			game.setCurrentCard(game.getCard(letter, number));
+
+			if (!rules.isValid(game))
+				player.setActive(false);
 		}
+
+		Player remainingPlayer = rules.getNextPlayer(game);
+		remainingPlayer.addRubies(*rubisDeck.getNext());
+		game.incrementRound();
 	}
+
+	system("cls");
+
+	std::sort(game.getPlayers().begin(), game.getPlayers().end(), comp);
+
+	std::cout << "Game over! Standings:" << std::endl;
+	for (Player& player : game.getPlayers()) {
+		std::cout << player.getName() << std::endl;
+	}
+
+	std::cout << std::endl << "The winner is: " << game.getPlayers()[game.getPlayers().size()-1].getName() << "!" << std::endl;
+}
+
+bool comp(Player a, Player b) {
+	return a.getNRubies() < b.getNRubies();
 }

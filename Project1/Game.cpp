@@ -29,6 +29,11 @@ std::ostream& operator<<(std::ostream& os, Game& game) {
 	return os;
 }
 
+void Game::incrementRound() 
+{
+	round++;
+}
+
 int Game::getRound() const
 {
 	return round;
@@ -49,18 +54,28 @@ Player& Game::getPlayer(Side side)
 
 const Card* Game::getPreviousCard() const
 {
-	return previousCard;
+	return &previousCard;
 }
 
 const Card* Game::getCurrentCard() const
 {
-	return currentCard;
+	return &currentCard;
 }
 
 void Game::setCurrentCard(const Card* card) 
 {
-	*previousCard = *currentCard;
-	*currentCard = *card;
+	if (currentCard != nullptr) {
+		Card currCard = Card(*currentCard);
+		previousCard = &currCard;
+	}
+
+	Card newCard = Card(*card);
+	currentCard = &newCard;
+
+	if(previousCard != nullptr)
+		std::cout << (*previousCard)(1) << std::endl;
+
+	std::cout << (*currentCard)(1) << std::endl;
 }
 
 Card* Game::getCard(const Letter& letter, const Number& number) 
@@ -73,7 +88,11 @@ void Game::setCard(const Letter& letter, const Number& number, Card* card)
 	board->setCard(letter, number, card);
 }
 
-std::vector<Player> Game::getPlayers() const {
+std::vector<Player>& Game::getPlayers() {
+	return players;
+}
+
+const std::vector<Player>& Game::getPlayers() const {
 	return players;
 }
 

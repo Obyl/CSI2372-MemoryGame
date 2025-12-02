@@ -6,6 +6,12 @@ Card::Card(FaceAnimal faceAnimal, FaceBackground faceBackground)
     this->faceBackground = faceBackground;
 }
 
+Card::Card(const Card& other) 
+{
+    this->faceAnimal = other.faceAnimal;
+    this->faceBackground = other.faceBackground;
+}
+
 int Card::getNRows()
 {
     return 3;
