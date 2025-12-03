@@ -7,6 +7,7 @@ private:
 	bool expertDisplayMode;
 	bool expertRulesMode;
 	int currentPlayer;
+	bool mustPlayAgain;
 public:
 	Rules(bool, bool);
 	bool isValid(const Game&);
@@ -15,4 +16,6 @@ public:
 	const Player& getNextPlayer(const Game&);
 	void resetCurrentPlayer();
 	bool isExpertDisplayMode();
+	bool isExpertRulesMode();
+	void setMustPlayAgain(bool);
 };

@@ -24,6 +24,12 @@ void Game::resetStartOfRound()
 {
 	currentCard = nullptr;
 	previousCard = nullptr;
+
+	for (Player& player : players)
+	{
+		player.setActive(true);
+	}
+
 }
 
 void Game::addPlayer(const Player& player) {
@@ -78,7 +84,6 @@ const Card* Game::getCurrentCard() const
 
 void Game::setCurrentCard(const Card* card) 
 {
-
 	if (currentCard != nullptr) {
 
 		delete previousCard;

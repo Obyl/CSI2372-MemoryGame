@@ -4,6 +4,8 @@ Rules::Rules(bool expertDisplayMode, bool expertRulesMode) {
 	this->expertDisplayMode = expertDisplayMode;
 	this->expertRulesMode = expertRulesMode;
 
+	mustPlayAgain = false;
+
 	currentPlayer = -1;
 }
 
@@ -16,8 +18,18 @@ bool Rules::isValid(const Game& game) {
 		(game.getPreviousCard()->faceBackground == game.getCurrentCard()->faceBackground);
 }
 
+void Rules::setMustPlayAgain(bool value)
+{
+	mustPlayAgain = value;
+}
+
+bool Rules::isExpertRulesMode()
+{
+	return expertRulesMode;
+}
+
 bool Rules::gameOver(const Game& game) {
-	return game.getRound() > 7;
+	return game.getRound() > 4;
 }
 
 bool Rules::isExpertDisplayMode()
@@ -38,12 +50,13 @@ bool Rules::roundOver(const Game& game) {
 			activePlayers++;
 	}
 
-	// std::cerr << activePlayers << std::endl;
-	
 	return activePlayers == 1;
 }
 
 const Player& Rules::getNextPlayer(const Game& game) {
+
+	if (mustPlayAgain) return game.getPlayers()[currentPlayer];
+
 	do {
 		currentPlayer = (currentPlayer + 1) % game.getPlayers().size();
 	} while (!game.getPlayers()[currentPlayer].isActive());

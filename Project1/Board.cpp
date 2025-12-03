@@ -35,13 +35,35 @@ bool Board::turnFaceUp(const Letter& letter, const Number& number)
 
 bool Board::turnFaceDown(const Letter& letter, const Number& number)
 {
-   
+    Card* cardToFaceDown = getCard(letter, number);
+    
+    int index = -1;
+    for (Card* card : unflippedCardsSequence)
+    {
+        index++;
+        if ((card->faceAnimal == cardToFaceDown->faceAnimal) 
+            && (card->faceBackground == cardToFaceDown->faceBackground)) break;
+    }
+
+    unflippedCardsSequence.erase(unflippedCardsSequence.begin() + index);
+
     return face_up_flags[letter][number] = 0;
 }
 
 void Board::setExpertDisplay(bool value)
 {
     isExpertDisplay = value;
+}
+
+void Board::swapCards(const Letter& letter1, const Number& number1, const Letter& letter2, const Number& number2)
+{
+    std::swap(cards[letter1][number1], cards[letter2][number2]);
+    std::swap(face_up_flags[letter1][number1], face_up_flags[letter2][number2]);
+}
+
+int Board::getUnflippedCardsSequenceSize()
+{
+    return unflippedCardsSequence.size();
 }
 
 std::ostream& nonExpertDisplay(std::ostream& os, Board& board)

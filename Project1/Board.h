@@ -5,8 +5,8 @@
 #include <vector>
 #include "Card.h"
 
-enum Letter { A, B, C, D, E, };
-enum Number { one, two, three, four, five};
+enum Letter { A, B, C, D, E, NULL_LETTER };
+enum Number { one, two, three, four, five, NULL_NUMBER};
 
 const std::string letters = "ABCDE";
 const std::string numbers = "12345";
@@ -23,6 +23,7 @@ public:
 	bool isFaceUp(const Letter&, const Number&) const;
 	bool turnFaceUp(const Letter&, const Number&);
 	bool turnFaceDown(const Letter&, const Number&);
+	void swapCards(const Letter&, const Number&, const Letter&, const Number&);
 	Card* getCard(const Letter&, const Number&);
 	void setCard(const Letter&, const Number&, Card*);
 	void allFacesDown();
@@ -30,5 +31,6 @@ public:
 	friend std::ostream& nonExpertDisplay(std::ostream& os, Board& board);
 	friend std::ostream& expertDisplay(std::ostream& os, Board& board);
 	void setExpertDisplay(bool value);
+	int getUnflippedCardsSequenceSize();
 	
 };
