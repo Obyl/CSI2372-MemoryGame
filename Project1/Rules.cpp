@@ -29,7 +29,7 @@ bool Rules::isExpertRulesMode()
 }
 
 bool Rules::gameOver(const Game& game) {
-	return game.getRound() > 4;
+	return game.getRound() > 7;
 }
 
 bool Rules::isExpertDisplayMode()
