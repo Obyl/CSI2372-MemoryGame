@@ -72,7 +72,6 @@ int main() {
 
 	std::cout << game << std::endl;
 
-	// system("cls");
 
 	game.getDeckPtr()->shuffle();
 	for (int row = 0; row < 5; row++) {
@@ -114,7 +113,6 @@ int main() {
 				break;
 			}
 
-			// system("cls");
 
 			std::cout << "Round " << game.getRound() << " begins!" << std::endl;
 
@@ -126,7 +124,6 @@ int main() {
 		}	
 
 		while (!rules.roundOver(game)) {
-			//system("cls");
 			std::cout << game << std::endl;
 			
 
@@ -244,8 +241,6 @@ int main() {
 		game.incrementRound();
 
 	}
-
-	// system("cls");
 
 	std::sort(game.getPlayers().begin(), game.getPlayers().end(), comp);
 
