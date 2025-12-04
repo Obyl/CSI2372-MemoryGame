@@ -1,3 +1,7 @@
+/*
+* Header file for the Rules class
+*/
+
 #pragma once
 
 #include "Game.h"

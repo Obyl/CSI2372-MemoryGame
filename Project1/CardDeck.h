@@ -1,3 +1,7 @@
+/*
+* Header file for the CardDeck class.
+*/
+
 #pragma once
 
 #include "Card.h"

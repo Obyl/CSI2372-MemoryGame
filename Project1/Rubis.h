@@ -1,4 +1,9 @@
+/*
+* Header file for the Rubis class.
+*/
+
 #pragma once
+
 #include <assert.h>
 #include <iostream>
 

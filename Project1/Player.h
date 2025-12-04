@@ -1,3 +1,8 @@
+/*
+* Header file for the Player class.
+* Also includes the Side enum.
+*/
+
 #pragma once
 
 #include <string>
@@ -11,7 +16,7 @@ private:
 	Side side;
 	int rubies;
 	bool active;
-	bool displayMode;
+	bool endOfGame;
 public:
 	Player(std::string, Side);
 	std::string getName() const;

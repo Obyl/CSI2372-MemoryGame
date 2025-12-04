@@ -1,3 +1,7 @@
+/*
+* Header file for the Game class
+*/
+
 #pragma once
 
 #include <ostream>
@@ -8,19 +12,14 @@
 
 class Game {
 private:
-
-	CardDeck* deck_ptr;
 	Card *previousCard, *currentCard;
 	int round;
 	Board* board;
 	std::vector<Player> players;
-
 public:
-
 	Game();
 	~Game();
-	void incrementRound();
-	void resetStartOfRound();
+	void newRound();
 	int getRound() const;
 	void addPlayer(const Player&);
 	void deactivatePlayer(Side);
@@ -34,5 +33,4 @@ public:
 	std::vector<Player>& getPlayers();
 	const std::vector<Player>& getPlayers() const;
 	Board* getBoard();
-	CardDeck* getDeckPtr();
 };

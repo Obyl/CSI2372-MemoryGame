@@ -1,4 +1,10 @@
+/*
+* Header file for the DeckFactory class.
+*/
+
 #pragma once
+
+#include <algorithm>
 #include <vector>
 #include <random>
 
@@ -8,28 +14,18 @@ class DeckFactory {
 protected:
 	std::vector<C> deck;
 
+// Methods are defined inline as this is a template class
 public:
+	// Shuffle the deck
 	void shuffle()
 	{
-		for (int i = 0; i < 500; i++) {
-			int i0 = std::rand() % deck.size();
-			int i1 = std::rand() % deck.size();
+		std::random_device rd;
+		std::mt19937 g(rd());
 
-			C temp = deck[i0];
-			deck[i0] = deck[i1];
-			deck[i1] = temp;
-		}
-
-		/*std::vector<C> new_deck = deck;
-		int index = 0;
-		while (new_deck.size() > 0)
-		{
-			int random_index = std::rand() % new_deck.size();
-			deck[index++] = new_deck[random_index];
-			new_deck.erase(new_deck.begin() + random_index);
-		}*/
+		std::shuffle(deck.begin(), deck.end(), g);
 	}
 
+	// Get next item in deck
 	C* getNext()
 	{
 		C* card = &deck.back();
@@ -37,6 +33,7 @@ public:
 		return card;
 	}
 
+	// Getter for if the deck is empty
 	bool isEmpty() const
 	{
 		return deck.size() == 0;

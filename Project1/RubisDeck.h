@@ -1,3 +1,7 @@
+/*
+* Header file for the RubisDeck class.
+*/
+
 #pragma once
 
 #include "Rubis.h"
